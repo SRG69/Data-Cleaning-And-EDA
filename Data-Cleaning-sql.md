@@ -281,3 +281,24 @@ DESC temp_t;
 DESC agg_data;
 ```
 ![Screenshot 2023-09-12 130333](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/222352f4-5318-4087-a3c0-4f6c7cfde8c5)
+
+# Removing Outliers
+
+Finding Z-Score And removing all the data where Z-score > 2.576 or  Z-score < - 2.576
+
+![Screenshot 2023-09-12 155527](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/1c1a5452-8793-4b80-95f0-cd7cb18cc3fc)
+
+_If the data lies  > -2.576 or < 2.576 then that will be considered as outliers_
+
+```SQL
+DELETE FROM agg_data WHERE num_days_to_deliver IN (
+SELECT num_days_to_deliver FROM(
+SELECT 
+	*,
+    (num_days_to_deliver - AVG(num_days_to_deliver) OVER()) / STDDEV(num_days_to_deliver) OVER() AS 'Z_Score'
+FROM 
+	agg_data) AS score_table
+WHERE 
+Z_Score > 2.576 OR Z_Score < - 2.576);
+```
+
