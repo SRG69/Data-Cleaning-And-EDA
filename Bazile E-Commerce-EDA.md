@@ -1,0 +1,152 @@
+# _**EDA**_
+## Sales Analysis #
+
+1. **Total sales**
+
+```SQL
+SELECT 
+	ROUND(SUM(payment_value), 2)  AS total_sales
+FROM 
+  agg_data
+WHERE
+  payment_type <> 'voucher'; -- voucher are discount, so will substracted
+```
+![Screenshot 2023-09-12 135551](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/289ddca3-7a56-4351-8bb3-b0e65abe14c3)
+
+
+2. **Total Orders**
+
+```SQL
+SELECT
+	COUNT(order_id) AS total_orders
+FROM 
+  agg_data;
+```
+![Screenshot 2023-09-12 135726](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/7c151d8e-35e3-43ab-8fec-dad0c3b2c6ef)
+
+3. **Top 10 product by sales**
+```SQL
+SELECT
+	product_name,
+    ROUND(SUM(payment_value), 2) AS total_sales_by_product
+FROM agg_data
+WHERE
+  payment_type <> 'voucher'
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
+```
+![Screenshot 2023-09-12 135842](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/a4649f84-bbff-4c06-b559-e54275f0e502)
+
+4. **Top 10 product by orders**
+```SQL
+SELECT
+	product_name,
+    COUNT(order_id) AS total_orders_by_product
+FROM 
+  agg_data
+GROUP BY 1
+ORDER BY 2 DESC LIMIT 10;
+```
+![Screenshot 2023-09-12 135945](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/fdb3311d-18e2-4925-8bc1-b113983f6911)
+
+5. **Bottom 10 product by sales**
+```SQL
+SELECT
+	product_name,
+    ROUND(SUM(payment_value), 2) AS total_sales_by_product
+FROM 
+	agg_data
+WHERE 
+	payment_type <> 'voucher'
+GROUP BY 1
+ORDER BY 2 LIMIT 10;
+```
+![Screenshot 2023-09-12 140053](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/47cb9185-d6c3-480b-92f0-d62c753456cc)
+
+6. **Top 10 city by orders**
+```SQL
+SELECT
+	customer_city,
+    COUNT(order_id) AS orders_count
+FROM 
+	agg_data
+GROUP BY 1
+ORDER BY 2 DESC LIMIT 10;
+```
+![Screenshot 2023-09-12 140412](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/52622db0-349a-4117-9e4a-aff76f62f766)
+
+7. **Peak ORDER BY hour**
+```SQL
+SELECT
+	HOUR(order_date) AS hr,
+    COUNT(order_id) AS total_order
+FROM 
+	agg_data
+GROUP BY 1
+ORDER BY 2 DESC;
+```
+![Screenshot 2023-09-12 140614](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/0b2d8bdc-1897-4839-98c9-fbb1e29a0236)
+
+8. **Peak ORDER BY the day**
+```SQL
+SELECT
+	DAYNAME(order_date) AS day,
+  COUNT(order_id) AS total_order
+FROM 
+	agg_data
+GROUP BY 1
+ORDER BY 2 DESC;
+```
+![Screenshot 2023-09-12 140711](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/e020a236-f4f3-43fc-8be8-15a3ec181a0e)
+
+9. **Monthly order trend**
+```SQL
+SELECT
+	MONTHNAME(order_date) AS month,
+    COUNT(order_id) AS total_order
+FROM 
+	agg_data
+GROUP BY 1
+ORDER BY 2 DESC;
+```
+![Screenshot 2023-09-12 140844](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/6f78d910-b981-436e-a780-21eb036d6a8c)
+
+## Shipping/Seller Analysis:
+
+1. **Top seller city by customer orders**
+```SQL
+SELECT
+	seller_city,
+    count(order_id) as total_orders
+FROM 
+	agg_data
+GROUP BY 1
+ORDER BY 2 DESC limit 10;
+```
+![Screenshot 2023-09-12 141004](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/a3b05d86-dcfd-434b-abd7-230c7761f742)
+
+2. **Average delivery time**
+```SQL
+SELECT 
+	ROUND(AVG(num_days_to_deliver),2) AS Avg_delivery_time
+FROM agg_data;
+```
+![Screenshot 2023-09-12 153438](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/dced2b67-97bc-4def-a612-c2bf415979aa)
+
+
+3. **How many orders were delivered ontime and late ? Show in percentage**
+
+```SQL
+SELECT 
+	CONCAT(ROUND(COUNT(CASE WHEN delivered_date <= estimated_delivery_date THEN order_id ELSE null END) 
+    /
+    COUNT(*) * 100,2),' %') AS 'On time' ,
+	CONCAT(ROUND(COUNT(CASE WHEN delivered_date > estimated_delivery_date THEN order_id ELSE null END) 
+    /
+    COUNT(*) * 100,2),' %') AS 'Late' 
+FROM 
+	agg_data
+WHERE delivered_date IS NOT NULL;
+```
+![Screenshot 2023-09-12 154244](https://github.com/SRG69/Data-Cleaning-And-EDA/assets/131379055/bb55cd08-8a05-4812-bdbc-976cb995691f)
