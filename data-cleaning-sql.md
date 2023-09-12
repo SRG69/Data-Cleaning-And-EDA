@@ -124,10 +124,12 @@ MODIFY COLUMN order_approved_at DATETIME;
 ### order_delivered_carrier_date **Column**
 ```SQL
 -- Changing the Format
+
 UPDATE orders
 SET order_delivered_carrier_date = str_to_date(order_delivered_carrier_date, '%Y-%m-%d %H:%i:%s');
 
 -- Converting Text to Datetime Datatype
+
 ALTER TABLE orders
 MODIFY COLUMN order_delivered_carrier_date DATETIME;
 ```
@@ -135,20 +137,24 @@ MODIFY COLUMN order_delivered_carrier_date DATETIME;
 ### order_delivered_customer_date **Column**
 ```sql
 -- Changing the Format
+
 UPDATE orders
 SET order_delivered_customer_date = str_to_date(order_delivered_customer_date, '%Y-%m-%d %H:%i:%s');
 
 -- Converting Text to Datetime Datatype
+
 ALTER TABLE orders
 MODIFY COLUMN order_delivered_customer_date DATETIME;
 ```
 ### order_estimated_delivery_date **Column**
 ```SQL
 -- Changing the Format
+
 UPDATE orders
 SET order_estimated_delivery_date = str_to_date(order_estimated_delivery_date, '%Y-%m-%d %H:%i:%s');
 
 -- Converting Text to Datetime Datatype
+
 ALTER TABLE orders
 MODIFY COLUMN order_estimated_delivery_date DATETIME;
 ```
@@ -224,7 +230,7 @@ SELECT
     
     seller_id, shipping_limit_date, price, freight_value, payment_type,
 
-    -- Finding The actual Payments made by customer using vouchers and not using vouchers
+-- Finding The actual Payments made by customer using vouchers and not using vouchers
     ROUND(case when payment_type = 'voucher' then payment_value * quantity ELSE (price * quantity) + (freight_value * quantity) END, 2) as payment_value,
     
     review_id, review_score, seller_city, seller_state, seller_zip_code
@@ -241,7 +247,7 @@ SELECT
 
 -- Counting Total Quantity
 
-    COUNT(order_item_id) as quantity,
+	COUNT(order_item_id) as quantity,
 
     product_id, 
     
