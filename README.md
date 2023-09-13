@@ -5,7 +5,7 @@ This dataset, generously provided by Olist, the largest department store in Braz
 
 # Project Objective 🎯:
 
-The primary goal of this project was to conduct a comprehensive end-to-end analysis using SQL for data cleaning and exploratory data analysis (EDA) on a [Brazilian Olist E-commerce Dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce?datasetId=55151&select=olist_order_items_dataset.csv). Furthermore, the project aimed to present valuable insights through the creation of an interactive dashboard using Power BI.
+The main aim of this project was to dive into a full-scale analysis using SQL for data cleaning and exploratory data analysis (EDA) on a Brazilian E-commerce Dataset. Additionally, we wanted to share some valuable insights by crafting an interactive dashboard using Power BI.
 
 # Project Scope 🔭:
 
